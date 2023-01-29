@@ -28,9 +28,11 @@ public class TimeTable {
     @NotBlank(message = "Conference id mast be presented.")
     private String conferenceId;
 
+    @NotNull
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private LocalDateTime startDate;
 
+    @NotNull
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private LocalDateTime endDate;
 }

@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -21,8 +23,7 @@ public class Room {
     private String name;
 
     @NonNull
-    @Positive(message = "Sits number must be positive")
-    @Min(value = 1, message = "Sits number can not be less that 1")
-    private Integer sitsNumber;
-
+    @Positive(message = "Total sits number must be positive")
+    @Min(value = 1, message = "Total sits number can not be less that 1")
+    private Long totalSits;
 }

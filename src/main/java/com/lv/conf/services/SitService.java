@@ -1,6 +1,5 @@
 package com.lv.conf.services;
 
-import com.lv.conf.exceptions.SitException;
 import com.lv.conf.models.Sit;
 import com.lv.conf.repositories.SitRepository;
 import org.springframework.stereotype.Service;

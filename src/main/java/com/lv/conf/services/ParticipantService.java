@@ -1,7 +1,6 @@
 package com.lv.conf.services;
 
 import com.lv.conf.exceptions.ParticipantException;
-import com.lv.conf.exceptions.SitException;
 import com.lv.conf.models.Participant;
 import com.lv.conf.models.ParticipantDto;
 import com.lv.conf.models.Sit;
@@ -33,13 +32,7 @@ public class ParticipantService {
                 var conference = conferenceService
                         .getConference(pt.getConferenceId());
 
-                List<Sit> sits = sitService.getSits(conference.getConference().getId(), conference.getConference().getRoomId());
-
-                if (sits.contains(pt.getReservedSit())) {
-                    throw new ParticipantException("The sits " + pt.getReservedSit() + " is reserved.");
-                } else {
-                    sitService.setSit(conference.getConference().getId(), pt.getRoomId(), pt.getReservedSit());
-                }
+                sitService.setSit(conference.getConference().getId(), pt.getRoomId(), pt.getReservedSit());
 
                 return ParticipantDto
                         .builder()
@@ -55,7 +48,7 @@ public class ParticipantService {
         public Long addParticipant(Participant participant) {
             List<Sit> sits = sitService.getSits(participant.getConferenceId(), participant.getReservedSit());
             sits.forEach(sit -> {
-                if (sit.getReservedSit() == participant.getReservedSit()) {
+                if (sit.getReservedSit().equals(participant.getReservedSit())) {
                     throw new ParticipantException("Sit with number " + participant.getReservedSit() + " was reserved.");
                 }
             });

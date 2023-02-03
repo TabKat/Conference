@@ -1,6 +1,7 @@
 package com.lv.conf.controllers;
 
 import com.lv.conf.models.Conference;
+import com.lv.conf.models.ConferenceDto;
 import com.lv.conf.services.ConferenceService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -29,7 +30,7 @@ public class ConferenceController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Conference> getConference(@PathVariable Long id) {
+    public ResponseEntity<ConferenceDto> getConference(@PathVariable Long id) {
         return ResponseEntity.ok(conferenceService.getConference(id));
     }
 

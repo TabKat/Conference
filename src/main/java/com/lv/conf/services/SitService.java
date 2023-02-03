@@ -1,9 +1,11 @@
 package com.lv.conf.services;
 
-import com.lv.conf.models.Participant;
+import com.lv.conf.exceptions.SitException;
 import com.lv.conf.models.Sit;
 import com.lv.conf.repositories.SitRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class SitService {
@@ -13,14 +15,17 @@ public class SitService {
         this.sitRepository = sitRepository;
     }
 
-    public void reserveSit(Participant pt) {
+    public void setSit(Long conferenceId, Long roomId, Long sitId) {
+        Sit s = Sit
+                .builder()
+                .reservedSit(sitId)
+                .conferenceId(conferenceId)
+                .roomId(roomId)
+                .build();
+        sitRepository.save(s);
+    }
 
-        var sit = Sit.builder()
-                    .reservedSit(pt.getReservedSit())
-                    .conferenceId(pt.getConferenceId())
-                    .roomId(pt.getRoomId())
-                    .build();
-        sitRepository.save(sit);
-
+    public List<Sit> getSits(Long conferenceId, Long roomId) {
+        return sitRepository.findByConferenceIdAndReservedSit(conferenceId, roomId);
     }
 }

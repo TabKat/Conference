@@ -11,9 +11,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ParticipantDto {
-    private String firstName;
-    private String lastName;
-    private Long reservedSit;
-    private Conference conference;
+public class ConferenceDto {
+    Conference conference;
+    List<Sit> sits;
 }

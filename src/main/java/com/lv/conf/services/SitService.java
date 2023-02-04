@@ -27,4 +27,8 @@ public class SitService {
     public List<Sit> getSits(Long conferenceId, Long roomId) {
         return sitRepository.findByConferenceIdAndReservedSit(conferenceId, roomId);
     }
+
+    public void deleteSit(Long conferenceId, Long sitId) {
+        sitRepository.deleteByConferenceIdAndReservedSit(conferenceId, sitId);
+    }
 }

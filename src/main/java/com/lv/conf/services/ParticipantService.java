@@ -24,38 +24,40 @@ public class ParticipantService {
         this.sitService = sitService;
     }
 
-        public ParticipantDto getParticipant(Long id) {
-            Optional<Participant> participant = participantRepository.findById(id);
+    public ParticipantDto getParticipant(Long id) {
+        Optional<Participant> participant = participantRepository.findById(id);
 
-            if (participant.isPresent()) {
-                var pt = participant.get();
-                var conference = conferenceService
-                        .getConference(pt.getConferenceId());
+        if (participant.isPresent()) {
+            var pt = participant.get();
+            var conference = conferenceService
+                    .getConference(pt.getConferenceId());
 
-                sitService.setSit(conference.getConference().getId(), pt.getRoomId(), pt.getReservedSit());
+            sitService.setSit(conference.getConference().getId(), pt.getRoomId(), pt.getReservedSit());
 
-                return ParticipantDto
-                        .builder()
-                        .firstName(pt.getFirstName())
-                        .lastName(pt.getLastName())
-                        .reservedSit(pt.getReservedSit())
-                        .conference(conference.getConference())
-                        .build();
+            return ParticipantDto
+                    .builder()
+                    .firstName(pt.getFirstName())
+                    .lastName(pt.getLastName())
+                    .reservedSit(pt.getReservedSit())
+                    .conference(conference.getConference())
+                    .build();
+        }
+        throw new ParticipantException("Participant with id " + id + " not exists");
+    }
+
+    public Long addParticipant(Participant participant) {
+        List<Sit> sits = sitService.getSits(participant.getConferenceId(), participant.getReservedSit());
+        sits.forEach(sit -> {
+            if (sit.getReservedSit().equals(participant.getReservedSit())) {
+                throw new ParticipantException("Sit with number " + participant.getReservedSit() + " was reserved.");
             }
-            throw new ParticipantException("Participant with id " + id + " not exists");
-        }
+        });
+        return participantRepository.save(participant).getId();
+    }
 
-        public Long addParticipant(Participant participant) {
-            List<Sit> sits = sitService.getSits(participant.getConferenceId(), participant.getReservedSit());
-            sits.forEach(sit -> {
-                if (sit.getReservedSit().equals(participant.getReservedSit())) {
-                    throw new ParticipantException("Sit with number " + participant.getReservedSit() + " was reserved.");
-                }
-            });
-            return participantRepository.save(participant).getId();
-        }
-
-        public void deleteParticipant(Long id) {
-            participantRepository.deleteById(id);
-        }
+    public void deleteParticipant(Long id) {
+        Participant pt = participantRepository.getReferenceById(id);
+        sitService.deleteSit(pt.getConferenceId(), pt.getReservedSit());
+        participantRepository.deleteById(id);
+    }
 }

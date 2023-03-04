@@ -27,7 +27,7 @@ class RoomControllerTest {
     @Test
     void shouldReturnRoomIdWhenRoomCreated() {
         try {
-           this.mockMvc.perform(post("/api/v1/rooms")
+           mockMvc.perform(post("/api/v1/rooms")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(toJson(Room
                             .builder()

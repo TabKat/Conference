@@ -5,6 +5,9 @@ import com.lv.conf.models.Room;
 import com.lv.conf.repositories.RoomRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class RoomService {
     final private RoomRepository roomRepository;

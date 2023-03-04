@@ -10,10 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 import static com.lv.conf.config.Constants.*;
 
 @RestController
-@RequestMapping("/api/v1/conference")
+@RequestMapping("/api/v1/conferences")
 public class ConferenceController {
 
     final private ConferenceService conferenceService;
@@ -35,18 +37,19 @@ public class ConferenceController {
     }
 
     @ApiResponses({
-            @ApiResponse(code = 202, message = "Conference was created"),
+            @ApiResponse(code = 201, message = "Conference was created"),
             @ApiResponse(code = 400, message = BAD_REQUEST_STATUS_DESC),
             @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @PostMapping
-    public ResponseEntity<Long> createConference(@RequestBody Conference conference) {
-        return ResponseEntity.ok(conferenceService.addConference(conference));
+    public ResponseEntity createConference(@RequestBody Conference conference) {
+        String uri = String.format("/api/v1/conferences/%d", conferenceService.addConference(conference));
+        return ResponseEntity.created(URI.create(uri)).build();
     }
 
     @ApiOperation(value = "Delete conference.")
     @ApiResponses({
-            @ApiResponse(code = 202, message = "Conference was deleted"),
+            @ApiResponse(code = 204, message = "Conference was deleted"),
             @ApiResponse(code = 404, message = NOT_FOUND_STATUS_DESC),
             @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})

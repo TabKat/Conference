@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.lv.conf.config.Constants.*;
 
 @RestController
-@RequestMapping("/api/v1/participant")
+@RequestMapping("/api/v1/participants")
 public class ParticipantController {
     final private ParticipantService participantService;
 

@@ -9,10 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 import static com.lv.conf.config.Constants.*;
 
 @RestController
-@RequestMapping("/api/v1/room")
+@RequestMapping("/api/v1/rooms")
 public class RoomController {
     final private RoomService roomService;
 
@@ -32,18 +34,19 @@ public class RoomController {
     }
 
     @ApiResponses({
-            @ApiResponse(code = 202, message = "Room was created"),
+            @ApiResponse(code = 201, message = "Room was created"),
             @ApiResponse(code = 400, message = BAD_REQUEST_STATUS_DESC),
             @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @PostMapping
-    public ResponseEntity<Long> createRoom(@RequestBody Room room) {
-        return ResponseEntity.ok(roomService.addRoom(room));
+    public ResponseEntity createRoom(@RequestBody Room room) {
+        String uri = String.format("/api/v1/rooms/%d", roomService.addRoom(room));
+        return ResponseEntity.created(URI.create(uri)).build();
     }
 
     @ApiOperation(value = "Delete room.")
     @ApiResponses({
-            @ApiResponse(code = 202, message = "Room was deleted"),
+            @ApiResponse(code = 204, message = "Room was deleted"),
             @ApiResponse(code = 404, message = NOT_FOUND_STATUS_DESC),
             @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})

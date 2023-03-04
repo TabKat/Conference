@@ -32,10 +32,10 @@ public class TimeTable {
     private String conferenceId;
 
     @NotNull
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime startDate;
 
     @NotNull
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime endDate;
 }

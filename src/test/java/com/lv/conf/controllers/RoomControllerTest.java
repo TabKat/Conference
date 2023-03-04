@@ -3,18 +3,18 @@ package com.lv.conf.controllers;
 import com.lv.conf.models.Room;
 import com.lv.conf.services.RoomService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static groovy.json.JsonOutput.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = RoomController.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 class RoomControllerTest {
 
@@ -27,15 +27,18 @@ class RoomControllerTest {
     @Test
     void shouldReturnRoomIdWhenRoomCreated() {
         try {
-            this.mockMvc.perform(post("/api/v1/room")
-                    .content(String.valueOf(Room
+           this.mockMvc.perform(post("/api/v1/rooms")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(toJson(Room
                             .builder()
                             .id(1L)
                             .name("North")
                             .totalSits(200L)
                             .build())
-                  )).andExpect(MockMvcResultMatchers
-                    .jsonPath("$.1").exists());
+                    ))
+                   .andExpect(status().isCreated())
+                   .andExpect(header().string("Location", "/api/v1/rooms/1"));
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

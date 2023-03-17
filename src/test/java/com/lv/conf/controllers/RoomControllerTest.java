@@ -31,7 +31,6 @@ class RoomControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(toJson(Room
                             .builder()
-                            .id(1L)
                             .name("North")
                             .totalSits(200L)
                             .build())

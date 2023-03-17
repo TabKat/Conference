@@ -1,6 +1,5 @@
 package com.lv.conf.controllers;
 
-import com.lv.conf.models.Conference;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -8,8 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static groovy.json.JsonOutput.toJson;
-import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -25,13 +22,7 @@ class ConferenceControllerTest {
         try {
             mockMvc.perform(post("/api/v1/conferences")
                             .contentType(MediaType.APPLICATION_JSON)
-                    .content(toJson(Conference
-                                    .builder()
-                                    .id(1L)
-                                    .name("Spring Boot Conf")
-                                    .timeTable(any())
-                                    .roomId(55L)
-                                    .build())))
+                            .content("{\"name\":\"SpringBoot2023\",\"timeTable\":[{\"conferenceId\":\"123-456\",\"startDate\":\"2023-05-01 10:00\",\"endDate\":\"2023-05-01 18:00\"},{\"conferenceId\":\"123-456\",\"startDate\":\"2023-05-02 10:00\",\"endDate\":\"2023-05-01 17:00\"}],\"roomId\":55}"))
                     .andExpect(status().isCreated())
                     .andExpect(header().string("Location", "/api/v1/conferences/1"));
         } catch (Exception e) {

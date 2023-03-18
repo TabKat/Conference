@@ -7,6 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -20,13 +22,23 @@ class ConferenceControllerTest {
     @Test
     void shouldReturnConferenceIdWhenCreateConference() {
         try {
+            String json = getResource("fixtures/conference.json");
+
             mockMvc.perform(post("/api/v1/conferences")
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content("{\"name\":\"SpringBoot2023\",\"timeTable\":[{\"conferenceId\":\"123-456\",\"startDate\":\"2023-05-01 10:00\",\"endDate\":\"2023-05-01 18:00\"},{\"conferenceId\":\"123-456\",\"startDate\":\"2023-05-02 10:00\",\"endDate\":\"2023-05-01 17:00\"}],\"roomId\":55}"))
+                            .content(json))
                     .andExpect(status().isCreated())
                     .andExpect(header().string("Location", "/api/v1/conferences/1"));
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String getResource(String resourceName) throws IOException {
+        return new String(getClass()
+                .getClassLoader()
+                .getResourceAsStream(resourceName)
+                .readAllBytes());
     }
 }

@@ -31,7 +31,6 @@ public class ConferenceService {
     }
 
     public Long addConference(Conference conference) {
-        Conference conference1 = conference;
         return conferenceRepository.save(conference).getId();
     }
 

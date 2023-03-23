@@ -48,7 +48,7 @@ class RoomControllerTest {
                 .name("North")
                 .totalSits(50L)
                 .build();
-
+        
         when(roomService.addRoom(room)).thenReturn(1L);
 
         mockMvc.perform(post("/api/v1/rooms")
@@ -60,7 +60,6 @@ class RoomControllerTest {
 
     @Test
     void shouldRemoveRoom() throws Exception {
-
         mockMvc.perform(delete("/api/v1/rooms/1"))
                 .andExpect(status().is2xxSuccessful());
     }

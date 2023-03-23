@@ -12,7 +12,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.Month;
 
@@ -35,33 +34,28 @@ class ConferenceControllerTest {
     private ConferenceService conferenceService;
 
     @Test
-    void shouldReturnConferenceIdWhenCreateConference() {
-        try {
-            TimeTable tmTable = TimeTable
-                    .builder()
-                    .conferenceId("123-456")
-                    .startDate(LocalDateTime.of(2023, Month.MAY, 5, 2, 10, 0))
-                    .endDate(LocalDateTime.of(2023, Month.MAY, 5, 2, 18, 0))
-                    .build();
+    void shouldReturnConferenceIdWhenCreateConference() throws Exception {
+        TimeTable tmTable = TimeTable
+                .builder()
+                .conferenceId("123-456")
+                .startDate(LocalDateTime.of(2023, Month.MAY, 5, 2, 10, 0))
+                .endDate(LocalDateTime.of(2023, Month.MAY, 5, 2, 18, 0))
+                .build();
 
-            timeTableRepository.save(tmTable);
+        timeTableRepository.save(tmTable);
 
-            var conference = Conference
-                    .builder()
-                    .name("Spring Boot 2023")
-                    .roomId(55L)
-                    .build();
+        var conference = Conference
+                .builder()
+                .name("Spring Boot 2023")
+                .roomId(55L)
+                .build();
 
-            when(conferenceService.addConference(conference)).thenReturn(1L);
+        when(conferenceService.addConference(conference)).thenReturn(1L);
 
-            mockMvc.perform(post("/api/v1/conferences")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(toJson(conference)))
-                    .andExpect(status().isCreated())
-                    .andExpect(header().string("Location", "/api/v1/conferences/1"));
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        mockMvc.perform(post("/api/v1/conferences")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(conference)))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", "/api/v1/conferences/1"));
     }
 }

@@ -50,11 +50,10 @@ public class RoomController {
             @ApiResponse(code = 404, message = NOT_FOUND_STATUS_DESC),
             @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity deleteRoom(@RequestParam(name = "roomId")
-                                     Long roomId) {
-        roomService.deleteRoom(roomId);
+    public ResponseEntity deleteRoom(@PathVariable Long id) {
+        roomService.deleteRoom(id);
         return ResponseEntity.ok(204);
     }
 

@@ -3,10 +3,13 @@ package com.lv.conf.services;
 import com.lv.conf.exceptions.RoomException;
 import com.lv.conf.models.Room;
 import com.lv.conf.repositories.RoomRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RoomService {
+    private final static Logger LOG = LoggerFactory.getLogger(RoomService.class);
     final private RoomRepository roomRepository;
 
     public RoomService(RoomRepository roomRepository) {
@@ -16,9 +19,10 @@ public class RoomService {
     public Room getRoom(Long id) {
         var room = roomRepository.findById(id);
         if (room.isPresent()) {
+            LOG.info("Room: {}", room);
             return room.get();
         }
-        throw new RoomException("Room with id " + id + " does not exists");
+        throw new RoomException("Room with id " + id + " does not exist.");
     }
 
     public Long addRoom(Room room) {

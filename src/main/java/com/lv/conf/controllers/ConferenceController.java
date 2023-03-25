@@ -6,6 +6,9 @@ import com.lv.conf.services.ConferenceService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +17,11 @@ import java.net.URI;
 
 import static com.lv.conf.config.Constants.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/conferences")
 public class ConferenceController {
+    private final static Logger LOG = LoggerFactory.getLogger(ConferenceController.class);
 
     final private ConferenceService conferenceService;
 
@@ -33,6 +38,7 @@ public class ConferenceController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ConferenceDto> getConference(@PathVariable Long id) {
+        LOG.info("Get Conference with id {}", id);
         return ResponseEntity.ok(conferenceService.getConference(id));
     }
 
@@ -43,6 +49,7 @@ public class ConferenceController {
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @PostMapping
     public ResponseEntity createConference(@RequestBody Conference conference) {
+        LOG.info("Create Conference with parameters {}", conference);
         String uri = String.format("/api/v1/conferences/%d", conferenceService.addConference(conference));
         return ResponseEntity.created(URI.create(uri)).build();
     }
@@ -56,8 +63,9 @@ public class ConferenceController {
     @DeleteMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity deleteConference(@RequestParam(name = "conferenceId")
-                                     Long conferenceId) {
-        conferenceService.deleteConference(conferenceId);
+                                     Long id) {
+        LOG.info("Delete Conference with id {}", id);
+        conferenceService.deleteConference(id);
         return ResponseEntity.ok(204);
     }
 }

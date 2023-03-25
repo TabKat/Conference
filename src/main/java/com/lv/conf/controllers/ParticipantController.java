@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 import static com.lv.conf.config.Constants.*;
 
 @Slf4j
@@ -29,10 +31,9 @@ public class ParticipantController {
 
     @ApiOperation(value = "Get participant.")
         @ApiResponses({
-                @ApiResponse(code = 200, message = "Participant retrieved"),
-                @ApiResponse(code = 404, message = NOT_FOUND_STATUS_DESC),
-                @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
-
+            @ApiResponse(code = 200, message = "Participant retrieved"),
+            @ApiResponse(code = 404, message = NOT_FOUND_STATUS_DESC),
+            @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
         @GetMapping("/{id}")
         @ResponseStatus(HttpStatus.OK)
         public ResponseEntity<ParticipantDto> getParticipant(@PathVariable Long id) {
@@ -41,22 +42,23 @@ public class ParticipantController {
         }
 
         @ApiResponses({
-                @ApiResponse(code = 201, message = "Participant was created"),
-                @ApiResponse(code = 400, message = BAD_REQUEST_STATUS_DESC),
-                @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
-                @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
+            @ApiResponse(code = 201, message = "Participant was created"),
+            @ApiResponse(code = 400, message = BAD_REQUEST_STATUS_DESC),
+            @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
+            @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
         @PostMapping
-        public ResponseEntity<Long> createParticipant(@RequestBody Participant participant) {
+        public ResponseEntity<?> createParticipant(@RequestBody Participant participant) {
             LOG.info("Create Participant {}", participant);
-            return ResponseEntity.ok(participantService.addParticipant(participant));
+            String uri = String.format("/api/v1/conferences/%d",participantService.addParticipant(participant));
+            return ResponseEntity.created(URI.create(uri)).build();
         }
 
         @ApiOperation(value = "Delete participant.")
         @ApiResponses({
-                @ApiResponse(code = 204, message = "Participant was deleted"),
-                @ApiResponse(code = 404, message = NOT_FOUND_STATUS_DESC),
-                @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
-                @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
+            @ApiResponse(code = 204, message = "Participant was deleted"),
+            @ApiResponse(code = 404, message = NOT_FOUND_STATUS_DESC),
+            @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
+            @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
         @DeleteMapping("/{id}")
         @ResponseStatus(HttpStatus.ACCEPTED)
         public ResponseEntity<?> deleteParticipant(@PathVariable Long id) {

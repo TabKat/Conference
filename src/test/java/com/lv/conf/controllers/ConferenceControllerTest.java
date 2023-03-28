@@ -15,7 +15,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
@@ -24,8 +23,7 @@ import java.util.List;
 import static groovy.json.JsonOutput.toJson;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -82,17 +80,7 @@ class ConferenceControllerTest {
             .reservedSit(1L)
             .conferenceId(1L)
             .build());
-
-        List<TimeTable> tm = new ArrayList<>();
-        tm.add(timeTable);
-
-        var conference = Conference
-            .builder()
-            .id(1L)
-            .name("Spring Boot 2023")
-            .roomId(55L)
-            .timeTable(tm)
-            .build();
+        var conference = getConference();
 
         when(conferenceService.getConference(1L)).thenReturn(ConferenceDto
              .builder()
@@ -112,5 +100,25 @@ class ConferenceControllerTest {
             .andExpect(jsonPath("$.sits[0].reservedSit", is(1)))
             .andExpect(jsonPath("$.sits[0].conferenceId", is(1)))
             .andExpect(jsonPath("$.sits[0].roomId", is(1)));
+    }
+
+    @Test
+    void shouldRemoveRoom() throws Exception {
+        conferenceService.addConference(getConference());
+        mockMvc.perform(delete("/api/v1/conferences/1"))
+                .andExpect(status().is2xxSuccessful());
+    }
+
+    private Conference getConference() {
+        List<TimeTable> tm = new ArrayList<>();
+        tm.add(timeTable);
+
+        return Conference
+                .builder()
+                .id(1L)
+                .name("Spring Boot 2023")
+                .roomId(55L)
+                .timeTable(tm)
+                .build();
     }
 }

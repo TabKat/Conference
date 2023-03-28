@@ -59,9 +59,9 @@ public class ConferenceController {
         @ApiResponse(code = 404, message = NOT_FOUND_STATUS_DESC),
         @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
         @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<?> deleteConference(@RequestParam(name = "conferenceId") Long id) {
+    public ResponseEntity<?> deleteConference(@PathVariable Long id) {
         LOG.info("Delete Conference with id {}", id);
         conferenceService.deleteConference(id);
         return ResponseEntity.ok(204);

@@ -2,6 +2,7 @@ package com.lv.conf.controllers;
 
 import com.lv.conf.models.Room;
 import com.lv.conf.services.RoomService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -25,13 +26,21 @@ class RoomControllerTest {
     @MockBean
     private RoomService roomService;
 
-    @Test
-    void shouldReturnRoom() throws Exception {
-        when(roomService.getRoom(1L)).thenReturn(Room.builder()
+    private Room room;
+
+    @BeforeEach
+    void init() {
+        room = Room
+            .builder()
             .id(1L)
             .name("North")
             .totalSits(50L)
-            .build());
+            .build();
+    }
+
+    @Test
+    void shouldReturnRoom() throws Exception {
+        when(roomService.getRoom(1L)).thenReturn(room);
 
         mockMvc.perform(get("/api/v1/rooms/1")
             .contentType(APPLICATION_JSON_VALUE))
@@ -42,12 +51,6 @@ class RoomControllerTest {
 
     @Test
     void shouldCreateRoom() throws Exception {
-        var room = Room
-            .builder()
-            .name("North")
-            .totalSits(50L)
-            .build();
-        
         when(roomService.addRoom(room)).thenReturn(1L);
 
         mockMvc.perform(post("/api/v1/rooms")
@@ -59,6 +62,7 @@ class RoomControllerTest {
 
     @Test
     void shouldRemoveRoom() throws Exception {
+        roomService.addRoom(room);
         mockMvc.perform(delete("/api/v1/rooms/1"))
              .andExpect(status().is2xxSuccessful());
     }

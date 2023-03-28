@@ -29,7 +29,7 @@ class RoomControllerTest {
     private Room room;
 
     @BeforeEach
-    void init() {
+    void setup() {
         room = Room
             .builder()
             .id(1L)

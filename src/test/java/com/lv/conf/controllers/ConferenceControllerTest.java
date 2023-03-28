@@ -41,7 +41,7 @@ class ConferenceControllerTest {
     private TimeTable timeTable;
 
     @BeforeEach
-    void init() {
+    void setup() {
         timeTable = TimeTable
             .builder()
             .conferenceId("123-456")

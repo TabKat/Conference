@@ -14,13 +14,13 @@ public class SitService {
         this.sitRepository = sitRepository;
     }
 
-    public void setSit(Long conferenceId, Long roomId, Long sitId) {
+    public void reserveSit(Long conferenceId, Long roomId, Long sitId) {
         Sit s = Sit
-                .builder()
-                .reservedSit(sitId)
-                .conferenceId(conferenceId)
-                .roomId(roomId)
-                .build();
+            .builder()
+            .reservedSit(sitId)
+            .conferenceId(conferenceId)
+            .roomId(roomId)
+            .build();
         sitRepository.save(s);
     }
 

@@ -29,18 +29,17 @@ public class ParticipantService {
 
         if (participant.isPresent()) {
             var pt = participant.get();
-            var conference = conferenceService
-                    .getConference(pt.getConferenceId());
+            var conference = conferenceService.getConference(pt.getConferenceId());
 
-            sitService.setSit(conference.getConference().getId(), pt.getRoomId(), pt.getReservedSit());
+            sitService.reserveSit(conference.getConference().getId(), pt.getRoomId(), pt.getReservedSit());
 
             return ParticipantDto
-                    .builder()
-                    .firstName(pt.getFirstName())
-                    .lastName(pt.getLastName())
-                    .reservedSit(pt.getReservedSit())
-                    .conference(conference.getConference())
-                    .build();
+                .builder()
+                .firstName(pt.getFirstName())
+                .lastName(pt.getLastName())
+                .reservedSit(pt.getReservedSit())
+                .conference(conference.getConference())
+                .build();
         }
         throw new ParticipantException("Participant with id " + id + " not exists");
     }

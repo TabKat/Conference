@@ -20,12 +20,11 @@ public class ConferenceService {
     public ConferenceDto getConference(Long id) {
         var conf = conferenceRepository.findById(id);
         if (conf.isPresent()) {
-
             return ConferenceDto
-                    .builder()
-                    .conference(conf.get())
-                    .sits(sitService.getSits(conf.get().getId(), conf.get().getRoomId()))
-                    .build();
+                .builder()
+                .conference(conf.get())
+                .sits(sitService.getSits(conf.get().getId(), conf.get().getRoomId()))
+                .build();
         }
         throw new ConferenceException("Conference with id " + id + " does not exists.");
     }

@@ -28,39 +28,38 @@ class RoomControllerTest {
     @Test
     void shouldReturnRoom() throws Exception {
         when(roomService.getRoom(1L)).thenReturn(Room.builder()
-                .id(1L)
-                .name("North")
-                .totalSits(50L)
-                .build());
+            .id(1L)
+            .name("North")
+            .totalSits(50L)
+            .build());
 
         mockMvc.perform(get("/api/v1/rooms/1")
-                .contentType(APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is("North")))
-                .andExpect(jsonPath("$.totalSits", is(50)));
-
+            .contentType(APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.id", is(1)))
+            .andExpect(jsonPath("$.name", is("North")))
+            .andExpect(jsonPath("$.totalSits", is(50)));
     }
 
     @Test
     void shouldCreateRoom() throws Exception {
         var room = Room
-                .builder()
-                .name("North")
-                .totalSits(50L)
-                .build();
+            .builder()
+            .name("North")
+            .totalSits(50L)
+            .build();
         
         when(roomService.addRoom(room)).thenReturn(1L);
 
         mockMvc.perform(post("/api/v1/rooms")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson(room)))
-                .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/api/v1/rooms/1"));
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(toJson(room)))
+            .andExpect(status().isCreated())
+            .andExpect(header().string("Location", "/api/v1/rooms/1"));
     }
 
     @Test
     void shouldRemoveRoom() throws Exception {
         mockMvc.perform(delete("/api/v1/rooms/1"))
-                .andExpect(status().is2xxSuccessful());
+             .andExpect(status().is2xxSuccessful());
     }
 }

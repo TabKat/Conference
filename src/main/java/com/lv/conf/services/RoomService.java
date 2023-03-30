@@ -3,10 +3,12 @@ package com.lv.conf.services;
 import com.lv.conf.exceptions.RoomException;
 import com.lv.conf.models.Room;
 import com.lv.conf.repositories.RoomRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class RoomService {
     private final static Logger LOG = LoggerFactory.getLogger(RoomService.class);

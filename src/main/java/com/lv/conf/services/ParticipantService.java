@@ -5,6 +5,9 @@ import com.lv.conf.models.Participant;
 import com.lv.conf.models.ParticipantDto;
 import com.lv.conf.models.Sit;
 import com.lv.conf.repositories.ParticipantRepository;
+import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +15,7 @@ import java.util.Optional;
 
 @Service
 public class ParticipantService {
+    private static final Logger LOG = LoggerFactory.getLogger(ParticipantService.class);
     final private ParticipantRepository participantRepository;
     final private ConferenceService conferenceService;
     private final SitService sitService;
@@ -24,14 +28,16 @@ public class ParticipantService {
         this.sitService = sitService;
     }
 
+    @Transactional
     public ParticipantDto getParticipant(Long id) {
+        LOG.info("Find participant with id {}", id);
         Optional<Participant> participant = participantRepository.findById(id);
 
         if (participant.isPresent()) {
+            LOG.info("Participant with id {} was found", id);
             var pt = participant.get();
+            LOG.info("Find participant conference with id {}", pt.getConferenceId());
             var conference = conferenceService.getConference(pt.getConferenceId());
-
-            sitService.reserveSit(conference.getConference().getId(), pt.getRoomId(), pt.getReservedSit());
 
             return ParticipantDto
                 .builder()
@@ -44,19 +50,39 @@ public class ParticipantService {
         throw new ParticipantException("Participant with id " + id + " not exists");
     }
 
+    @Transactional
     public Long addParticipant(Participant participant) {
+        LOG.info("Add participant {}", participant);
+        LOG.info("Get sit for participant with conference id {} and reserved sits {}",
+                participant.getConferenceId(),
+                participant.getReservedSit());
         List<Sit> sits = sitService.getSits(participant.getConferenceId(), participant.getReservedSit());
         sits.forEach(sit -> {
+            LOG.info("Checking if selected sit was reserved...");
             if (sit.getReservedSit().equals(participant.getReservedSit())) {
                 throw new ParticipantException("Sit with number " + participant.getReservedSit() + " was reserved.");
             }
         });
+
+        LOG.info("Reserve sit for participant with id {} for conference id {}, and with room id {}",
+            participant.getConferenceId(),
+            participant.getRoomId(),
+            participant.getReservedSit());
+        sitService.reserveSit(participant.getConferenceId(),
+            participant.getRoomId(),
+            participant.getReservedSit());
+
+        LOG.info("Participant was added");
         return participantRepository.save(participant).getId();
     }
 
+    @Transactional
     public void deleteParticipant(Long id) {
+        LOG.info("Get participant with id {}", id);
         Participant pt = participantRepository.getReferenceById(id);
+        LOG.info("Delete reserved sit for participant with id {}", id);
         sitService.deleteSit(pt.getConferenceId(), pt.getReservedSit());
+        LOG.info("Delete participant");
         participantRepository.deleteById(id);
     }
 }

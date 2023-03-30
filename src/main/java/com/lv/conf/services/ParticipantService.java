@@ -53,12 +53,10 @@ public class ParticipantService {
     @Transactional
     public Long addParticipant(Participant participant) {
         LOG.info("Add participant {}", participant);
-        LOG.info("Get sit for participant with conference id {} and reserved sits {}",
-                participant.getConferenceId(),
-                participant.getReservedSit());
+        LOG.info("Find all reserved sits for conference id {}", participant.getConferenceId());
         List<Sit> sits = sitService.getSits(participant.getConferenceId(), participant.getReservedSit());
         sits.forEach(sit -> {
-            LOG.info("Checking if selected sit was reserved");
+            LOG.info("Checking if selected by participant sit was reserved");
             if (sit.getReservedSit().equals(participant.getReservedSit())) {
                 throw new ParticipantException("Sit with number " + participant.getReservedSit() + " was reserved.");
             }

@@ -58,7 +58,7 @@ public class ParticipantService {
                 participant.getReservedSit());
         List<Sit> sits = sitService.getSits(participant.getConferenceId(), participant.getReservedSit());
         sits.forEach(sit -> {
-            LOG.info("Checking if selected sit was reserved...");
+            LOG.info("Checking if selected sit was reserved");
             if (sit.getReservedSit().equals(participant.getReservedSit())) {
                 throw new ParticipantException("Sit with number " + participant.getReservedSit() + " was reserved.");
             }
@@ -78,7 +78,7 @@ public class ParticipantService {
 
     @Transactional
     public void deleteParticipant(Long id) {
-        LOG.info("Get participant with id {}", id);
+        LOG.info("Delete participant with id {}", id);
         Participant pt = participantRepository.getReferenceById(id);
         LOG.info("Delete reserved sit for participant with id {}", id);
         sitService.deleteSit(pt.getConferenceId(), pt.getReservedSit());

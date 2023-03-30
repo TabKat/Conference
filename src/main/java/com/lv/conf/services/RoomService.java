@@ -3,6 +3,7 @@ package com.lv.conf.services;
 import com.lv.conf.exceptions.RoomException;
 import com.lv.conf.models.Room;
 import com.lv.conf.repositories.RoomRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
+    @Transactional
     public Room getRoom(Long id) {
         var room = roomRepository.findById(id);
         if (room.isPresent()) {

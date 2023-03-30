@@ -26,10 +26,10 @@ public class ConferenceService {
 
     @Transactional
     public ConferenceDto getConference(Long id) {
-        LOG.info("Trying to find conference with id {}...", id);
+        LOG.info("Find conference with id {}", id);
         var conf = conferenceRepository.findById(id);
         if (conf.isPresent()) {
-            LOG.info("Conference with id {} is presented", id);
+            LOG.info("Conference with id {} was found", id);
             return ConferenceDto
                 .builder()
                 .conference(conf.get())

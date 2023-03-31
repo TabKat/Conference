@@ -37,7 +37,6 @@ public class ConferenceController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ConferenceDto> getConference(@PathVariable Long id) {
-        LOG.info("Get Conference with id {}", id);
         return ResponseEntity.ok(conferenceService.getConference(id));
     }
 
@@ -48,9 +47,9 @@ public class ConferenceController {
         @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @PostMapping
     public ResponseEntity<HttpStatus> createConference(@RequestBody Conference conference) {
-        LOG.info("Create Conference with parameters {}", conference);
         String uri = String.format("/api/v1/conferences/%d", conferenceService.addConference(conference));
 
+        LOG.info("Conference was created and can be accessed via uri {}", uri);
         return ResponseEntity.created(URI.create(uri)).build();
     }
 
@@ -63,9 +62,9 @@ public class ConferenceController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<Integer> deleteConference(@PathVariable Long id) {
-        LOG.info("Delete Conference with id {}", id);
         conferenceService.deleteConference(id);
 
+        LOG.info("Conference with id {} was successfully deleted", id);
         return ResponseEntity.ok(204);
     }
 }

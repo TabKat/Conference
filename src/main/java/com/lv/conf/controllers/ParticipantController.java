@@ -37,7 +37,6 @@ public class ParticipantController {
         @GetMapping("/{id}")
         @ResponseStatus(HttpStatus.OK)
         public ResponseEntity<ParticipantDto> getParticipant(@PathVariable Long id) {
-            LOG.info("Get Participant with id {}", id);
             return ResponseEntity.ok(participantService.getParticipant(id));
         }
 
@@ -48,9 +47,9 @@ public class ParticipantController {
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
         @PostMapping
         public ResponseEntity<HttpStatus> createParticipant(@RequestBody Participant participant) {
-            LOG.info("Create Participant {}", participant);
             String uri = String.format("/api/v1/conferences/%d",participantService.addParticipant(participant));
 
+            LOG.info("Participant was created and can be accessed via uri {}", uri);
             return ResponseEntity.created(URI.create(uri)).build();
         }
 
@@ -63,9 +62,9 @@ public class ParticipantController {
         @DeleteMapping("/{id}")
         @ResponseStatus(HttpStatus.ACCEPTED)
         public ResponseEntity<Integer> deleteParticipant(@PathVariable Long id) {
-            LOG.info("Delete Participant with id {}", id);
             participantService.deleteParticipant(id);
 
+            LOG.info("Participant with id {} was successfully deleted", id);
             return ResponseEntity.ok(204);
         }
 }

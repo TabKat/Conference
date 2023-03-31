@@ -34,7 +34,6 @@ public class RoomController {
         @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @GetMapping("/{id}")
     public ResponseEntity<Room> getRoom(@PathVariable Long id) {
-        LOG.info("Get Room with id {}", id);
         return ResponseEntity.ok(roomService.getRoom(id));
     }
 
@@ -45,9 +44,9 @@ public class RoomController {
         @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @PostMapping
     public ResponseEntity<HttpStatus> createRoom(@RequestBody Room room) {
-        LOG.info("Create room with parameters {}", room);
         String uri = String.format("/api/v1/rooms/%d", roomService.addRoom(room));
 
+        LOG.info("Room was created and can be accessed via uri {}", uri);
         return ResponseEntity.created(URI.create(uri)).build();
     }
 
@@ -60,9 +59,9 @@ public class RoomController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<Integer> deleteRoom(@PathVariable Long id) {
-        LOG.info("Delete Room with id {}", id);
         roomService.deleteRoom(id);
 
+        LOG.info("Room with id {} was successfully deleted", id);
         return ResponseEntity.ok(204);
     }
 

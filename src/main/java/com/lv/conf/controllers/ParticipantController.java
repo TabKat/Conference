@@ -21,9 +21,9 @@ import static com.lv.conf.config.Constants.*;
 @RestController
 @RequestMapping("/api/v1/participants")
 public class ParticipantController {
-    private final static Logger LOG = LoggerFactory.getLogger(ParticipantController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ParticipantController.class);
 
-    final private ParticipantService participantService;
+    private final ParticipantService participantService;
 
     public ParticipantController(ParticipantService participantService) {
         this.participantService = participantService;

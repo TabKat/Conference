@@ -20,8 +20,8 @@ import static com.lv.conf.config.Constants.*;
 @RestController
 @RequestMapping("/api/v1/rooms")
 public class RoomController {
-    final private static Logger LOG = LoggerFactory.getLogger(RoomController.class);
-    final private RoomService roomService;
+    private static final Logger LOG = LoggerFactory.getLogger(RoomController.class);
+    private final RoomService roomService;
 
     public RoomController(RoomService roomService) {
         this.roomService = roomService;
@@ -44,7 +44,7 @@ public class RoomController {
         @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
         @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @PostMapping
-    public ResponseEntity<?> createRoom(@RequestBody Room room) {
+    public ResponseEntity<HttpStatus> createRoom(@RequestBody Room room) {
         LOG.info("Create room with parameters {}", room);
         String uri = String.format("/api/v1/rooms/%d", roomService.addRoom(room));
         return ResponseEntity.created(URI.create(uri)).build();
@@ -58,7 +58,7 @@ public class RoomController {
         @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<?> deleteRoom(@PathVariable Long id) {
+    public ResponseEntity<Integer> deleteRoom(@PathVariable Long id) {
         LOG.info("Delete Room with id {}", id);
         roomService.deleteRoom(id);
         return ResponseEntity.ok(204);

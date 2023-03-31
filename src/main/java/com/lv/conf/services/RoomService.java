@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class RoomService {
-    private final static Logger LOG = LoggerFactory.getLogger(RoomService.class);
-    final private RoomRepository roomRepository;
+    private static final Logger LOG = LoggerFactory.getLogger(RoomService.class);
+    private final RoomRepository roomRepository;
 
     public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;

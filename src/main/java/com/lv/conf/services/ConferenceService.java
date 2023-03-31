@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class ConferenceService {
     private static final Logger LOG = LoggerFactory.getLogger(ConferenceService.class);
 
-    final private ConferenceRepository conferenceRepository;
+    private final ConferenceRepository conferenceRepository;
     private final SitService sitService;
 
     ConferenceService(ConferenceRepository conferenceRepository,

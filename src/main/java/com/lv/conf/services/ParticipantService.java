@@ -16,8 +16,8 @@ import java.util.Optional;
 @Service
 public class ParticipantService {
     private static final Logger LOG = LoggerFactory.getLogger(ParticipantService.class);
-    final private ParticipantRepository participantRepository;
-    final private ConferenceService conferenceService;
+    private final ParticipantRepository participantRepository;
+    private final ConferenceService conferenceService;
     private final SitService sitService;
 
     public ParticipantService(ParticipantRepository participantRepository,

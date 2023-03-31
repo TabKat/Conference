@@ -47,7 +47,7 @@ public class ParticipantController {
             @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
         @PostMapping
-        public ResponseEntity<ResponseStatus> createParticipant(@RequestBody Participant participant) {
+        public ResponseEntity<HttpStatus> createParticipant(@RequestBody Participant participant) {
             LOG.info("Create Participant {}", participant);
             String uri = String.format("/api/v1/conferences/%d",participantService.addParticipant(participant));
             return ResponseEntity.created(URI.create(uri)).build();

@@ -47,7 +47,7 @@ public class ConferenceController {
         @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
         @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @PostMapping
-    public ResponseEntity<ResponseStatus> createConference(@RequestBody Conference conference) {
+    public ResponseEntity<HttpStatus> createConference(@RequestBody Conference conference) {
         LOG.info("Create Conference with parameters {}", conference);
         String uri = String.format("/api/v1/conferences/%d", conferenceService.addConference(conference));
         return ResponseEntity.created(URI.create(uri)).build();

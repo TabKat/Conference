@@ -21,19 +21,22 @@ public class RoomService {
 
     @Transactional
     public Room getRoom(Long id) {
+        LOG.info("Get room with id {}", id);
         var room = roomRepository.findById(id);
         if (room.isPresent()) {
-            LOG.info("Room: {}", room);
+            LOG.info("Room with id {} was found", room);
             return room.get();
         }
         throw new RoomException("Room with id " + id + " does not exist.");
     }
 
     public Long addRoom(Room room) {
+        LOG.info("Add room {}", room);
         return roomRepository.save(room).getId();
     }
 
     public void deleteRoom(Long id) {
+        LOG.info("Delete room with id {}", id);
         roomRepository.deleteById(id);
     }
 

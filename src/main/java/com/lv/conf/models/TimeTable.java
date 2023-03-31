@@ -27,7 +27,6 @@ public class TimeTable {
     @JsonIgnore
     private Long id;
 
-    @NotNull
     @NotBlank(message = "Conference id mast be presented.")
     private String conferenceId;
 

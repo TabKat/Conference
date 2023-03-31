@@ -19,7 +19,6 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NonNull
     @NotBlank(message = "Room's name mast be presented")
     private String name;
 

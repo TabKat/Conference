@@ -21,8 +21,6 @@ public class Conference {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
-    @NotBlank
     @NotBlank(message = "Conference name mast be presented.")
     private String name;
 

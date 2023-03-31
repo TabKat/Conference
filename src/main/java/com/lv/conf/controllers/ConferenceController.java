@@ -50,6 +50,7 @@ public class ConferenceController {
     public ResponseEntity<HttpStatus> createConference(@RequestBody Conference conference) {
         LOG.info("Create Conference with parameters {}", conference);
         String uri = String.format("/api/v1/conferences/%d", conferenceService.addConference(conference));
+
         return ResponseEntity.created(URI.create(uri)).build();
     }
 
@@ -64,6 +65,7 @@ public class ConferenceController {
     public ResponseEntity<Integer> deleteConference(@PathVariable Long id) {
         LOG.info("Delete Conference with id {}", id);
         conferenceService.deleteConference(id);
+
         return ResponseEntity.ok(204);
     }
 }

@@ -47,6 +47,7 @@ public class RoomController {
     public ResponseEntity<HttpStatus> createRoom(@RequestBody Room room) {
         LOG.info("Create room with parameters {}", room);
         String uri = String.format("/api/v1/rooms/%d", roomService.addRoom(room));
+
         return ResponseEntity.created(URI.create(uri)).build();
     }
 
@@ -61,6 +62,7 @@ public class RoomController {
     public ResponseEntity<Integer> deleteRoom(@PathVariable Long id) {
         LOG.info("Delete Room with id {}", id);
         roomService.deleteRoom(id);
+
         return ResponseEntity.ok(204);
     }
 

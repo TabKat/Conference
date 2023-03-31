@@ -23,6 +23,7 @@ public class RoomService {
     public Room getRoom(Long id) {
         LOG.info("Get room with id {}", id);
         var room = roomRepository.findById(id);
+
         if (room.isPresent()) {
             LOG.info("Room with id {} was found", room);
             return room.get();

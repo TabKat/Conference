@@ -36,6 +36,7 @@ public class ParticipantService {
         if (participant.isPresent()) {
             LOG.info("Participant with id {} was found", id);
             var pt = participant.get();
+
             LOG.info("Find participant conference with id {}", pt.getConferenceId());
             var conference = conferenceService.getConference(pt.getConferenceId());
 
@@ -55,6 +56,7 @@ public class ParticipantService {
         LOG.info("Add participant {}", participant);
         LOG.info("Find all reserved sits for conference id {}", participant.getConferenceId());
         List<Sit> sits = sitService.getSits(participant.getConferenceId(), participant.getReservedSit());
+
         sits.forEach(sit -> {
             LOG.info("Checking if selected by participant sit was reserved");
             if (sit.getReservedSit().equals(participant.getReservedSit())) {
@@ -78,8 +80,10 @@ public class ParticipantService {
     public void deleteParticipant(Long id) {
         LOG.info("Delete participant with id {}", id);
         Participant pt = participantRepository.getReferenceById(id);
+
         LOG.info("Delete reserved sit for participant with id {}", id);
         sitService.deleteSit(pt.getConferenceId(), pt.getReservedSit());
+
         LOG.info("Delete participant");
         participantRepository.deleteById(id);
     }

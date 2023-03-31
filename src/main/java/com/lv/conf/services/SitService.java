@@ -29,6 +29,7 @@ public class SitService {
             .conferenceId(conferenceId)
             .roomId(roomId)
             .build();
+
         LOG.info("Save sit {}", s);
         sitRepository.save(s);
     }

@@ -28,6 +28,7 @@ public class ConferenceService {
     public ConferenceDto getConference(Long id) {
         LOG.info("Find conference with id {}", id);
         var conf = conferenceRepository.findById(id);
+
         if (conf.isPresent()) {
             LOG.info("Conference with id {} was found", id);
             return ConferenceDto

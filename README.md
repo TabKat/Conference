@@ -1,6 +1,6 @@
 # :house: Conference
 Conference is project that I am working on as a skeleton for my future projects.
-It contains basic CRUD operation but can be extended further.
+It contains basic CRUD operation but can be extended with other features further.
 
 ## :rocket: Installation
 Just go in project root and run from your terminal

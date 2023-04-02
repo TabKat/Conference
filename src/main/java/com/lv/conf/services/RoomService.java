@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 public class RoomService {
@@ -22,7 +24,7 @@ public class RoomService {
     @Transactional
     public Room getRoom(Long id) {
         LOG.info("Get room with id {}", id);
-        var room = roomRepository.findById(id);
+        Optional<Room> room = roomRepository.findById(id);
 
         if (room.isPresent()) {
             LOG.info("Room with id {} was found", room);

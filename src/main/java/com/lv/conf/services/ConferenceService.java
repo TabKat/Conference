@@ -10,6 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
+import java.util.Optional;
+
 @Slf4j
 @Service
 public class ConferenceService {
@@ -27,7 +30,7 @@ public class ConferenceService {
     @Transactional
     public ConferenceDto getConference(Long id) {
         LOG.info("Find conference with id {}", id);
-        var conf = conferenceRepository.findById(id);
+        Optional<Conference> conf = conferenceRepository.findById(id);
 
         if (conf.isPresent()) {
             LOG.info("Conference with id {} was found", id);

@@ -1,9 +1,7 @@
 package com.lv.conf.services;
 
 import com.lv.conf.exceptions.ParticipantException;
-import com.lv.conf.models.Participant;
-import com.lv.conf.models.ParticipantDto;
-import com.lv.conf.models.Sit;
+import com.lv.conf.models.*;
 import com.lv.conf.repositories.ParticipantRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -35,10 +33,10 @@ public class ParticipantService {
 
         if (participant.isPresent()) {
             LOG.info("Participant with id {} was found", id);
-            var pt = participant.get();
+            Participant pt = participant.get();
 
             LOG.info("Find participant conference with id {}", pt.getConferenceId());
-            var conference = conferenceService.getConference(pt.getConferenceId());
+            ConferenceDto conference = conferenceService.getConference(pt.getConferenceId());
 
             return ParticipantDto
                 .builder()

@@ -1,7 +1,7 @@
 package com.lv.conf.services;
 
 import com.lv.conf.models.Conference;
-import com.lv.conf.models.ConferenceDto;
+import com.lv.conf.dtos.ConferenceDto;
 import com.lv.conf.models.TimeTable;
 import com.lv.conf.repositories.ConferenceRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

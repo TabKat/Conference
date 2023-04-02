@@ -1,7 +1,7 @@
 package com.lv.conf.controllers;
 
 import com.lv.conf.models.Conference;
-import com.lv.conf.models.ConferenceDto;
+import com.lv.conf.dtos.ConferenceDto;
 import com.lv.conf.models.Sit;
 import com.lv.conf.models.TimeTable;
 import com.lv.conf.repositories.TimeTableRepository;

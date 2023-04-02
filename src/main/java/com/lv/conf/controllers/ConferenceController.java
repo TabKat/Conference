@@ -1,7 +1,7 @@
 package com.lv.conf.controllers;
 
 import com.lv.conf.models.Conference;
-import com.lv.conf.models.ConferenceDto;
+import com.lv.conf.dtos.ConferenceDto;
 import com.lv.conf.services.ConferenceService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

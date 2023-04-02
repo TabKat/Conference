@@ -1,5 +1,6 @@
 package com.lv.conf.services;
 
+import com.lv.conf.dtos.ConferenceDto;
 import com.lv.conf.exceptions.ParticipantException;
 import com.lv.conf.models.*;
 import com.lv.conf.repositories.ParticipantRepository;

@@ -5,6 +5,7 @@ import com.lv.conf.exceptions.ParticipantException;
 import com.lv.conf.models.*;
 import com.lv.conf.repositories.ParticipantRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class ParticipantService {
     private static final Logger LOG = LoggerFactory.getLogger(ParticipantService.class);

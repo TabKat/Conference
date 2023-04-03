@@ -58,8 +58,8 @@ public class ParticipantService {
         LOG.info("Find all reserved sits for conference id {}", participant.getConferenceId());
         List<Sit> sits = sitService.getSits(participant.getConferenceId(), participant.getReservedSit());
 
+        LOG.info("Checking if selected sit was reserved");
         sits.forEach(sit -> {
-            LOG.info("Checking if selected by participant sit was reserved");
             if (sit.getReservedSit().equals(participant.getReservedSit())) {
                 throw new ParticipantException("Sit with number " + participant.getReservedSit() + " was reserved.");
             }

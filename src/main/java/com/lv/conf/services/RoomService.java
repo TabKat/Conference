@@ -1,6 +1,5 @@
 package com.lv.conf.services;
 
-import com.lv.conf.exceptions.RoomException;
 import com.lv.conf.models.Room;
 import com.lv.conf.repositories.RoomRepository;
 import jakarta.transaction.Transactional;
@@ -22,15 +21,9 @@ public class RoomService {
     }
 
     @Transactional
-    public Room getRoom(Long id) {
+    public Optional<Room> getRoom(Long id) {
         LOG.info("Get room with id {}", id);
-        Optional<Room> room = roomRepository.findById(id);
-
-        if (room.isPresent()) {
-            LOG.info("Room with id {} was found", room);
-            return room.get();
-        }
-        throw new RoomException("Room with id " + id + " does not exist.");
+        return roomRepository.findById(id);
     }
 
     public Long addRoom(Room room) {

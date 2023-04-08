@@ -1,6 +1,8 @@
 package com.lv.conf.exceptions;
 
-public class SitException extends RuntimeException {
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+
+public class SitException extends ResourceNotFoundException {
 
     public SitException(String message) {
         super(message);

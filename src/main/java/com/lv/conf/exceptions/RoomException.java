@@ -1,6 +1,8 @@
 package com.lv.conf.exceptions;
 
-public class RoomException extends RuntimeException {
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+
+public class RoomException extends ResourceNotFoundException {
 
     public RoomException(String message) {
         super(message);

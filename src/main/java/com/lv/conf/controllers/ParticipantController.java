@@ -1,5 +1,6 @@
 package com.lv.conf.controllers;
 
+import com.lv.conf.exceptions.ParticipantException;
 import com.lv.conf.models.Participant;
 import com.lv.conf.models.ParticipantDto;
 import com.lv.conf.services.ParticipantService;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Optional;
 
 import static com.lv.conf.config.Constants.*;
 
@@ -37,7 +39,11 @@ public class ParticipantController {
         @GetMapping("/{id}")
         @ResponseStatus(HttpStatus.OK)
         public ResponseEntity<ParticipantDto> getParticipant(@PathVariable Long id) {
-            return ResponseEntity.ok(participantService.getParticipant(id));
+            Optional<ParticipantDto> participant = participantService.getParticipant(id);
+            if (participant.isEmpty()) {
+                throw new ParticipantException("Participant with id " + id + " not exists");
+            }
+            return ResponseEntity.ok(participant.get());
         }
 
         @ApiResponses({

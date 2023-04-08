@@ -58,7 +58,7 @@ class ConferenceServiceTest {
     void shouldGetConference() {
         when(conferenceRepository.findById(1L)).thenReturn(Optional.of(conference));
 
-        ConferenceDto dto = conferenceService.getConference(1L);
+        ConferenceDto dto = conferenceService.getConference(1L).get();
 
         assertThat(dto.getConference().getId(), equalTo(1L));
         assertThat(dto.getConference().getName(), equalTo("Spring Boot 2023"));

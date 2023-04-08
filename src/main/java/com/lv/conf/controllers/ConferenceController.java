@@ -1,5 +1,6 @@
 package com.lv.conf.controllers;
 
+import com.lv.conf.exceptions.ConferenceException;
 import com.lv.conf.models.Conference;
 import com.lv.conf.dtos.ConferenceDto;
 import com.lv.conf.services.ConferenceService;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Optional;
 
 import static com.lv.conf.config.Constants.*;
 
@@ -37,7 +39,11 @@ public class ConferenceController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ConferenceDto> getConference(@PathVariable Long id) {
-        return ResponseEntity.ok(conferenceService.getConference(id));
+        Optional<ConferenceDto> conference = conferenceService.getConference(id);
+        if (conference.isEmpty()) {
+            throw new ConferenceException("Conference with id " + id + " does not exists.");
+        }
+        return ResponseEntity.ok(conference.get());
     }
 
     @ApiResponses({

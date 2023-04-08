@@ -1,8 +1,7 @@
 package com.lv.conf.services;
 
-import com.lv.conf.exceptions.ConferenceException;
-import com.lv.conf.models.Conference;
 import com.lv.conf.dtos.ConferenceDto;
+import com.lv.conf.models.Conference;
 import com.lv.conf.repositories.ConferenceRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -27,19 +26,19 @@ public class ConferenceService {
     }
 
     @Transactional
-    public ConferenceDto getConference(Long id) {
+    public Optional<ConferenceDto> getConference(Long id) {
         LOG.info("Find conference with id {}", id);
         Optional<Conference> conf = conferenceRepository.findById(id);
 
         if (conf.isPresent()) {
             LOG.info("Conference with id {} was found", id);
-            return ConferenceDto
-                .builder()
-                .conference(conf.get())
-                .sits(sitService.getSits(conf.get().getId(), conf.get().getRoomId()))
-                .build();
+            return Optional.of(ConferenceDto
+                    .builder()
+                    .conference(conf.get())
+                    .sits(sitService.getSits(conf.get().getId(), conf.get().getRoomId()))
+                    .build());
         }
-        throw new ConferenceException("Conference with id " + id + " does not exists.");
+        return Optional.empty();
     }
 
     public Long addConference(Conference conference) {

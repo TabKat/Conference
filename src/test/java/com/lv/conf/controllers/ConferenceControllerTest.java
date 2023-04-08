@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static groovy.json.JsonOutput.toJson;
 import static org.hamcrest.CoreMatchers.is;
@@ -82,11 +83,11 @@ class ConferenceControllerTest {
             .build());
         var conference = getConference();
 
-        when(conferenceService.getConference(1L)).thenReturn(ConferenceDto
+        when(conferenceService.getConference(1L)).thenReturn(Optional.of(ConferenceDto
              .builder()
              .conference(conference)
              .sits(sits)
-             .build());
+             .build()));
 
         mockMvc.perform(get("/api/v1/conferences/1")
             .contentType(MediaType.APPLICATION_JSON))

@@ -1,6 +1,8 @@
 package com.lv.conf.exceptions;
 
-public class ParticipantException extends RuntimeException {
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+
+public class ParticipantException extends ResourceNotFoundException {
 
     public ParticipantException(String message) {
         super(message);

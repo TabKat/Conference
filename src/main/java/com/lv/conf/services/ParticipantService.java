@@ -30,7 +30,7 @@ public class ParticipantService {
     }
 
     @Transactional
-    public ParticipantDto getParticipant(Long id) {
+    public Optional<ParticipantDto> getParticipant(Long id) {
         LOG.info("Find participant with id {}", id);
         Optional<Participant> participant = participantRepository.findById(id);
 
@@ -39,17 +39,19 @@ public class ParticipantService {
             Participant pt = participant.get();
 
             LOG.info("Find participant conference with id {}", pt.getConferenceId());
-            ConferenceDto conference = conferenceService.getConference(pt.getConferenceId());
+            Optional<ConferenceDto> conference = conferenceService.getConference(pt.getConferenceId());
 
-            return ParticipantDto
-                .builder()
-                .firstName(pt.getFirstName())
-                .lastName(pt.getLastName())
-                .reservedSit(pt.getReservedSit())
-                .conference(conference.getConference())
-                .build();
+            if (!conference.isEmpty()) {
+                return Optional.of(ParticipantDto
+                        .builder()
+                        .firstName(pt.getFirstName())
+                        .lastName(pt.getLastName())
+                        .reservedSit(pt.getReservedSit())
+                        .conference(conference.get().getConference())
+                        .build());
+            }
         }
-        throw new ParticipantException("Participant with id " + id + " not exists");
+        return Optional.empty();
     }
 
     @Transactional

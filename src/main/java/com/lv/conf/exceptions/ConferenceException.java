@@ -1,6 +1,8 @@
 package com.lv.conf.exceptions;
 
-public class ConferenceException extends RuntimeException {
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+
+public class ConferenceException extends ResourceNotFoundException {
 
     public ConferenceException(String message) {
         super(message);

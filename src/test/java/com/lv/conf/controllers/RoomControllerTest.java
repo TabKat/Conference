@@ -10,6 +10,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Optional;
+
 import static groovy.json.JsonOutput.toJson;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
@@ -34,13 +36,13 @@ class RoomControllerTest {
             .builder()
             .id(1L)
             .name("North")
-            .totalSits(50L)
+            .totalSits(50)
             .build();
     }
 
     @Test
     void shouldReturnRoom() throws Exception {
-        when(roomService.getRoom(1L)).thenReturn(room);
+        when(roomService.getRoom(1L)).thenReturn(Optional.of(room));
 
         mockMvc.perform(get("/api/v1/rooms/1")
             .contentType(APPLICATION_JSON_VALUE))

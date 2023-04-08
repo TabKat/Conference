@@ -1,5 +1,6 @@
 package com.lv.conf.controllers;
 
+import com.lv.conf.exceptions.RoomException;
 import com.lv.conf.models.Room;
 import com.lv.conf.services.RoomService;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Optional;
 
 import static com.lv.conf.config.Constants.*;
 
@@ -34,7 +36,11 @@ public class RoomController {
         @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @GetMapping("/{id}")
     public ResponseEntity<Room> getRoom(@PathVariable Long id) {
-        return ResponseEntity.ok(roomService.getRoom(id));
+        Optional<Room> room = roomService.getRoom(id);
+        if (room.isEmpty()) {
+            throw new RoomException("Room with id " + id + " does not exist.");
+        }
+        return ResponseEntity.ok(room.get());
     }
 
     @ApiResponses({

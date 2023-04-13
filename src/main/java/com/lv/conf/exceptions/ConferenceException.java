@@ -9,7 +9,7 @@ public class ConferenceException extends ResourceNotFoundException {
     }
 
     public ConferenceException(String message, Throwable cause) {
-        super(message, cause instanceof ConferenceException && cause.getCause() != null? cause.getCause(): cause);
+        super(message, cause instanceof ConferenceException && cause.getCause() != null ? cause.getCause() : cause);
     }
 
 }

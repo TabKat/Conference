@@ -44,11 +44,11 @@ public class SitService {
 
         LOG.info("Reserve sit with conference id {} with room id {}, and sit number {}", conferenceId, roomId, sitNumber);
         Sit s = Sit
-            .builder()
-            .reservedSit(sitNumber)
-            .conferenceId(conferenceId)
-            .roomId(roomId)
-            .build();
+                .builder()
+                .reservedSit(sitNumber)
+                .conferenceId(conferenceId)
+                .roomId(roomId)
+                .build();
 
         LOG.info("Save sit {}", s);
         sitRepository.save(s);

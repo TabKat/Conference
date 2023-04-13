@@ -1,8 +1,8 @@
 package com.lv.conf.controllers;
 
+import com.lv.conf.dtos.ConferenceDto;
 import com.lv.conf.exceptions.ConferenceException;
 import com.lv.conf.models.Conference;
-import com.lv.conf.dtos.ConferenceDto;
 import com.lv.conf.services.ConferenceService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.Optional;
 
 import static com.lv.conf.config.Constants.*;
 
@@ -33,24 +32,24 @@ public class ConferenceController {
 
     @ApiOperation(value = "Get conference.")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "Conference retrieved"),
-        @ApiResponse(code = 404, message = NOT_FOUND_STATUS_DESC),
-        @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
+            @ApiResponse(code = 200, message = "Conference retrieved"),
+            @ApiResponse(code = 404, message = NOT_FOUND_STATUS_DESC),
+            @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ConferenceDto> getConference(@PathVariable Long id) {
-        Optional<ConferenceDto> conference = conferenceService.getConference(id);
-        if (conference.isEmpty()) {
-            throw new ConferenceException("Conference with id " + id + " does not exists.");
-        }
-        return ResponseEntity.ok(conference.get());
+        ConferenceDto conference = conferenceService
+                .getConference(id)
+                .orElseThrow(() -> new ConferenceException("Conference with id " + id + " does not exists."));
+
+        return ResponseEntity.ok(conference);
     }
 
     @ApiResponses({
-        @ApiResponse(code = 201, message = "Conference was created"),
-        @ApiResponse(code = 400, message = BAD_REQUEST_STATUS_DESC),
-        @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
-        @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
+            @ApiResponse(code = 201, message = "Conference was created"),
+            @ApiResponse(code = 400, message = BAD_REQUEST_STATUS_DESC),
+            @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
+            @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @PostMapping
     public ResponseEntity<HttpStatus> createConference(@RequestBody Conference conference) {
         String uri = String.format("/api/v1/conferences/%d", conferenceService.addConference(conference));
@@ -61,10 +60,10 @@ public class ConferenceController {
 
     @ApiOperation(value = "Delete conference.")
     @ApiResponses({
-        @ApiResponse(code = 204, message = "Conference was deleted"),
-        @ApiResponse(code = 404, message = NOT_FOUND_STATUS_DESC),
-        @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
-        @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
+            @ApiResponse(code = 204, message = "Conference was deleted"),
+            @ApiResponse(code = 404, message = NOT_FOUND_STATUS_DESC),
+            @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
+            @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<Integer> deleteConference(@PathVariable Long id) {

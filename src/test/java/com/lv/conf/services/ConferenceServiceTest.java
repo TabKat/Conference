@@ -1,7 +1,7 @@
 package com.lv.conf.services;
 
-import com.lv.conf.models.Conference;
 import com.lv.conf.dtos.ConferenceDto;
+import com.lv.conf.models.Conference;
 import com.lv.conf.models.TimeTable;
 import com.lv.conf.repositories.ConferenceRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,19 +37,19 @@ class ConferenceServiceTest {
     void setup() {
         List<TimeTable> tm = new ArrayList<>();
         tm.add(TimeTable
-            .builder()
-            .conferenceId("123-456")
-            .startDate(LocalDateTime.of(2023, Month.MAY, 5, 2, 10, 0))
-            .endDate(LocalDateTime.of(2023, Month.MAY, 5, 2, 18, 0))
-            .build());
+                .builder()
+                .conferenceId("123-456")
+                .startDate(LocalDateTime.of(2023, Month.MAY, 5, 2, 10, 0))
+                .endDate(LocalDateTime.of(2023, Month.MAY, 5, 2, 18, 0))
+                .build());
 
         conference = Conference
-            .builder()
-            .id(1L)
-            .name("Spring Boot 2023")
-            .roomId(55L)
-            .timeTable(tm)
-            .build();
+                .builder()
+                .id(1L)
+                .name("Spring Boot 2023")
+                .roomId(55L)
+                .timeTable(tm)
+                .build();
 
         conferenceService = new ConferenceService(conferenceRepository, sitService);
     }

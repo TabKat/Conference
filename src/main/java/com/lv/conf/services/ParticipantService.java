@@ -2,7 +2,9 @@ package com.lv.conf.services;
 
 import com.lv.conf.dtos.ConferenceDto;
 import com.lv.conf.exceptions.ParticipantException;
-import com.lv.conf.models.*;
+import com.lv.conf.models.Participant;
+import com.lv.conf.models.ParticipantDto;
+import com.lv.conf.models.Sit;
 import com.lv.conf.repositories.ParticipantRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +43,7 @@ public class ParticipantService {
             LOG.info("Find participant conference with id {}", pt.getConferenceId());
             Optional<ConferenceDto> conference = conferenceService.getConference(pt.getConferenceId());
 
-            if (!conference.isEmpty()) {
+            if (conference.isPresent()) {
                 return Optional.of(ParticipantDto
                         .builder()
                         .firstName(pt.getFirstName())
@@ -68,12 +70,12 @@ public class ParticipantService {
         });
 
         LOG.info("Reserve sit for participant with id {} for conference id {}, and with room id {}",
-            participant.getConferenceId(),
-            participant.getRoomId(),
-            participant.getReservedSit());
+                participant.getConferenceId(),
+                participant.getRoomId(),
+                participant.getReservedSit());
         sitService.reserveSit(participant.getConferenceId(),
-            participant.getRoomId(),
-            participant.getReservedSit());
+                participant.getRoomId(),
+                participant.getReservedSit());
 
         LOG.info("Participant was added");
         return participantRepository.save(participant).getId();

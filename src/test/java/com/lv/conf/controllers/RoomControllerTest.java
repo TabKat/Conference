@@ -33,11 +33,11 @@ class RoomControllerTest {
     @BeforeEach
     void setup() {
         room = Room
-            .builder()
-            .id(1L)
-            .name("North")
-            .totalSits(50)
-            .build();
+                .builder()
+                .id(1L)
+                .name("North")
+                .totalSits(50)
+                .build();
     }
 
     @Test
@@ -45,10 +45,10 @@ class RoomControllerTest {
         when(roomService.getRoom(1L)).thenReturn(Optional.of(room));
 
         mockMvc.perform(get("/api/v1/rooms/1")
-            .contentType(APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id", is(1)))
-            .andExpect(jsonPath("$.name", is("North")))
-            .andExpect(jsonPath("$.totalSits", is(50)));
+                        .contentType(APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.name", is("North")))
+                .andExpect(jsonPath("$.totalSits", is(50)));
     }
 
     @Test
@@ -56,16 +56,16 @@ class RoomControllerTest {
         when(roomService.addRoom(room)).thenReturn(1L);
 
         mockMvc.perform(post("/api/v1/rooms")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(toJson(room)))
-            .andExpect(status().isCreated())
-            .andExpect(header().string("Location", "/api/v1/rooms/1"));
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(room)))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", "/api/v1/rooms/1"));
     }
 
     @Test
     void shouldRemoveRoom() throws Exception {
         roomService.addRoom(room);
         mockMvc.perform(delete("/api/v1/rooms/1"))
-             .andExpect(status().is2xxSuccessful());
+                .andExpect(status().is2xxSuccessful());
     }
 }

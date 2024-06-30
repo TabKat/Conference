@@ -6,6 +6,7 @@ import com.lv.conf.services.RoomService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,7 @@ public class RoomController {
             @ApiResponse(code = 404, message = NOT_FOUND_STATUS_DESC),
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @GetMapping("/{id}")
-    public ResponseEntity<Room> getRoom(@PathVariable Long id) {
+    public ResponseEntity<Room> getRoom(@Valid @PathVariable Long id) {
         Room room = roomService
                 .getRoom(id)
                 .orElseThrow(() -> new RoomException("Room with id " + id + " does not exist."));
@@ -48,7 +49,7 @@ public class RoomController {
             @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @PostMapping
-    public ResponseEntity<HttpStatus> createRoom(@RequestBody Room room) {
+    public ResponseEntity<HttpStatus> createRoom(@Valid @RequestBody Room room) {
         String uri = String.format("/api/v1/rooms/%d", roomService.addRoom(room));
 
         LOG.info("Room was created and can be accessed via uri {}", uri);
@@ -63,7 +64,7 @@ public class RoomController {
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<Integer> deleteRoom(@PathVariable Long id) {
+    public ResponseEntity<Integer> deleteRoom(@Valid @PathVariable Long id) {
         roomService.deleteRoom(id);
 
         LOG.info("Room with id {} was successfully deleted", id);

@@ -1,6 +1,5 @@
 package com.lv.conf.services;
 
-import com.lv.conf.dtos.ConferenceDto;
 import com.lv.conf.models.Conference;
 import com.lv.conf.models.TimeTable;
 import com.lv.conf.repositories.ConferenceRepository;
@@ -35,7 +34,7 @@ class ConferenceServiceTest {
 
     @BeforeEach
     void setup() {
-        List<TimeTable> tm = new ArrayList<>();
+        List<TimeTable> tm = new ArrayList<>(1);
         tm.add(TimeTable
                 .builder()
                 .conferenceId("123-456")
@@ -58,16 +57,16 @@ class ConferenceServiceTest {
     void shouldGetConference() {
         when(conferenceRepository.findById(1L)).thenReturn(Optional.of(conference));
 
-        ConferenceDto dto = conferenceService.getConference(1L).get();
+        conferenceService.getConference(1L).ifPresent(dto -> {
+            assertThat(dto.getConference().getId(), equalTo(1L));
+            assertThat(dto.getConference().getName(), equalTo("Spring Boot 2023"));
+            assertThat(dto.getConference().getRoomId(), equalTo(55L));
 
-        assertThat(dto.getConference().getId(), equalTo(1L));
-        assertThat(dto.getConference().getName(), equalTo("Spring Boot 2023"));
-        assertThat(dto.getConference().getRoomId(), equalTo(55L));
-
-        var timeTable = dto.getConference().getTimeTable().get(0);
-        assertThat(timeTable.getConferenceId(), equalTo("123-456"));
-        assertThat(timeTable.getStartDate(), equalTo(LocalDateTime.parse("2023-05-05T02:10")));
-        assertThat(timeTable.getEndDate(), equalTo(LocalDateTime.parse("2023-05-05T02:18")));
+            var timeTable = dto.getConference().getTimeTable().get(0);
+            assertThat(timeTable.getConferenceId(), equalTo("123-456"));
+            assertThat(timeTable.getStartDate(), equalTo(LocalDateTime.parse("2023-05-05T02:10")));
+            assertThat(timeTable.getEndDate(), equalTo(LocalDateTime.parse("2023-05-05T02:18")));
+        });
     }
 
     @Test

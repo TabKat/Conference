@@ -8,8 +8,7 @@ import com.lv.conf.models.Sit;
 import com.lv.conf.repositories.ParticipantRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +17,11 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class ParticipantService {
-    private static final Logger LOG = LoggerFactory.getLogger(ParticipantService.class);
     private final ParticipantRepository participantRepository;
     private final ConferenceService conferenceService;
     private final SitService sitService;
 
+    @Autowired
     public ParticipantService(ParticipantRepository participantRepository,
                               ConferenceService conferenceService,
                               SitService sitService) {
@@ -32,14 +31,14 @@ public class ParticipantService {
     }
 
     public Optional<ParticipantDto> getParticipant(Long id) {
-        LOG.info("Find participant with id {}", id);
+        log.info("Find participant with id {}", id);
         Optional<Participant> participant = participantRepository.findById(id);
 
         if (participant.isPresent()) {
-            LOG.info("Participant with id {} was found", id);
+            log.info("Participant with id {} was found", id);
             Participant pt = participant.get();
 
-            LOG.info("Find participant conference with id {}", pt.getConferenceId());
+            log.info("Find participant conference with id {}", pt.getConferenceId());
             Optional<ConferenceDto> conference = conferenceService.getConference(pt.getConferenceId());
 
             if (conference.isPresent()) {
@@ -57,18 +56,18 @@ public class ParticipantService {
 
     @Transactional
     public Long addParticipant(Participant participant) {
-        LOG.info("Add participant {}", participant);
-        LOG.info("Find all reserved sits for conference id {}", participant.getConferenceId());
+        log.info("Add participant {}", participant);
+        log.info("Find all reserved sits for conference id {}", participant.getConferenceId());
         List<Sit> sits = sitService.getSits(participant.getConferenceId(), participant.getReservedSit());
 
-        LOG.info("Checking if selected sit was reserved");
+        log.info("Checking if selected sit was reserved");
         sits.forEach(sit -> {
             if (sit.getReservedSit().equals(participant.getReservedSit())) {
                 throw new ParticipantException("Sit with number " + participant.getReservedSit() + " was reserved.");
             }
         });
 
-        LOG.info("Reserve sit for participant with id {} for conference id {}, and with room id {}",
+        log.info("Reserve sit for participant with id {} for conference id {}, and with room id {}",
                 participant.getConferenceId(),
                 participant.getRoomId(),
                 participant.getReservedSit());
@@ -76,19 +75,19 @@ public class ParticipantService {
                 participant.getRoomId(),
                 participant.getReservedSit());
 
-        LOG.info("Participant was added");
+        log.info("Participant was added");
         return participantRepository.save(participant).getId();
     }
 
     @Transactional
     public void deleteParticipant(Long id) {
-        LOG.info("Delete participant with id {}", id);
+        log.info("Delete participant with id {}", id);
         Participant pt = participantRepository.getReferenceById(id);
 
-        LOG.info("Delete reserved sit for participant with id {}", id);
+        log.info("Delete reserved sit for participant with id {}", id);
         sitService.deleteSit(pt.getConferenceId(), pt.getReservedSit());
 
-        LOG.info("Delete participant");
+        log.info("Delete participant");
         participantRepository.deleteById(id);
     }
 }

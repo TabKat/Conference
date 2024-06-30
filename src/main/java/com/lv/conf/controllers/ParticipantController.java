@@ -7,6 +7,7 @@ import com.lv.conf.services.ParticipantService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class ParticipantController {
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ParticipantDto> getParticipant(@PathVariable Long id) {
+    public ResponseEntity<ParticipantDto> getParticipant(@Valid @PathVariable Long id) {
         ParticipantDto participant = participantService
                 .getParticipant(id)
                 .orElseThrow(() -> new ParticipantException("Participant with id " + id + " not exists"));
@@ -51,7 +52,7 @@ public class ParticipantController {
             @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @PostMapping
-    public ResponseEntity<HttpStatus> createParticipant(@RequestBody Participant participant) {
+    public ResponseEntity<HttpStatus> createParticipant(@Valid @RequestBody Participant participant) {
         String uri = String.format("/api/v1/conferences/%d", participantService.addParticipant(participant));
 
         LOG.info("Participant was created and can be accessed via uri {}", uri);
@@ -66,7 +67,7 @@ public class ParticipantController {
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<Integer> deleteParticipant(@PathVariable Long id) {
+    public ResponseEntity<Integer> deleteParticipant(@Valid @PathVariable Long id) {
         participantService.deleteParticipant(id);
 
         LOG.info("Participant with id {} was successfully deleted", id);

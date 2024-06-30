@@ -7,6 +7,7 @@ import com.lv.conf.services.ConferenceService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class ConferenceController {
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ConferenceDto> getConference(@PathVariable Long id) {
+    public ResponseEntity<ConferenceDto> getConference(@Valid @PathVariable Long id) {
         ConferenceDto conference = conferenceService
                 .getConference(id)
                 .orElseThrow(() -> new ConferenceException("Conference with id " + id + " does not exists."));
@@ -51,7 +52,7 @@ public class ConferenceController {
             @ApiResponse(code = 422, message = UNPROCESSABLE_ENTITY_DESC),
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @PostMapping
-    public ResponseEntity<HttpStatus> createConference(@RequestBody Conference conference) {
+    public ResponseEntity<HttpStatus> createConference(@Valid @RequestBody Conference conference) {
         String uri = String.format("/api/v1/conferences/%d", conferenceService.addConference(conference));
 
         LOG.info("Conference was created and can be accessed via uri {}", uri);
@@ -66,7 +67,7 @@ public class ConferenceController {
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<Integer> deleteConference(@PathVariable Long id) {
+    public ResponseEntity<Integer> deleteConference(@Valid @PathVariable Long id) {
         conferenceService.deleteConference(id);
 
         LOG.info("Conference with id {} was successfully deleted", id);

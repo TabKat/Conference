@@ -59,6 +59,7 @@ public class SitService {
         return sitRepository.findByConferenceIdAndReservedSit(conferenceId, roomId);
     }
 
+    @Transactional
     public void deleteSit(Long conferenceId, Long sitId) {
         LOG.info("Delete sit for conference with id {}, and sit id {}", conferenceId, sitId);
         sitRepository.deleteByConferenceIdAndReservedSit(conferenceId, sitId);

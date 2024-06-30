@@ -20,17 +20,18 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    @Transactional
     public Optional<Room> getRoom(Long id) {
         LOG.info("Get room with id {}", id);
         return roomRepository.findById(id);
     }
 
+    @Transactional
     public Long addRoom(Room room) {
         LOG.info("Add room {}", room);
         return roomRepository.save(room).getId();
     }
 
+    @Transactional
     public void deleteRoom(Long id) {
         LOG.info("Delete room with id {}", id);
         roomRepository.deleteById(id);

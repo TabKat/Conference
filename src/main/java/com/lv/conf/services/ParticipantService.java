@@ -31,7 +31,6 @@ public class ParticipantService {
         this.sitService = sitService;
     }
 
-    @Transactional
     public Optional<ParticipantDto> getParticipant(Long id) {
         LOG.info("Find participant with id {}", id);
         Optional<Participant> participant = participantRepository.findById(id);

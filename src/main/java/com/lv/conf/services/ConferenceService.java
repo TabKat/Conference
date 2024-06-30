@@ -25,7 +25,6 @@ public class ConferenceService {
         this.sitService = sitService;
     }
 
-    @Transactional
     public Optional<ConferenceDto> getConference(Long id) {
         LOG.info("Find conference with id {}", id);
         Optional<Conference> conf = conferenceRepository.findById(id);
@@ -41,11 +40,13 @@ public class ConferenceService {
         return Optional.empty();
     }
 
+    @Transactional
     public Long addConference(Conference conference) {
         LOG.info("Add conference {}", conference);
         return conferenceRepository.save(conference).getId();
     }
 
+    @Transactional
     public void deleteConference(Long conferenceId) {
         LOG.info("Delete conference with id {}", conferenceId);
         conferenceRepository.deleteById(conferenceId);

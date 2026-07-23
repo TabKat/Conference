@@ -38,7 +38,7 @@ public class ConferenceController {
             @ApiResponse(code = 500, message = INTERNAL_SERVER_ERROR_STATUS_DESC)})
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ConferenceDto> getConference(@Valid @PathVariable Long id) {
+    public ResponseEntity<ConferenceDto> getConference(@PathVariable Long id) {
         ConferenceDto conference = conferenceService
                 .getConference(id)
                 .orElseThrow(() -> new ConferenceException("Conference with id " + id + " does not exists."));
